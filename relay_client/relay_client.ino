@@ -53,7 +53,9 @@ void loop()
 
   if (client.available())
   {
-    String command = client.readStringUntil('\n').trim();
+    String command = client.readStringUntil('\n');
+    command.trim();
+
     Serial.println("Received: " + command);
 
     if (command == "toggle")
