@@ -39,5 +39,4 @@ def run_cli():
             send_to_device(device, command)
 
         except KeyboardInterrupt:
-            logs.put('Exiting CLI...')
             break

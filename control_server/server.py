@@ -3,7 +3,7 @@ import threading
 import queue
 import time
 
-def wth():
+def wth(args):
     send_to_device('printer', 'print:what the helly!!!!' + ('\n' * 30))
     while True:
         send_to_device('relay', 'toggle')
@@ -57,12 +57,15 @@ def send_to_device(device, command):
 
 def start_server(host='0.0.0.0', port=7531):
     s = socket.socket()
+    s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     s.bind((host, port))
     s.listen()
 
     logs.put('Server running...')
 
-    while True:
-        conn, addr = s.accept()
-        threading.Thread(target=receive_from_device, args=(conn, addr), daemon=True).start()
-
+    try:
+        while True:
+            conn, addr = s.accept()
+            threading.Thread(target=receive_from_device, args=(conn, addr), daemon=True).start()
+    except KeyboardInterrupt:
+        s.close()
