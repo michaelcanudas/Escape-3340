@@ -3,8 +3,12 @@ import threading
 import queue
 
 logs = queue.Queue()
-
 devices = {}
+commands = {
+    'test': lambda args: {
+        
+    }
+}
 
 def receive_from_device(conn, addr):
     device_id = addr
