@@ -1,2 +1,4 @@
 build
 .DS_Store
+
+receipt_client/receipt_env/
