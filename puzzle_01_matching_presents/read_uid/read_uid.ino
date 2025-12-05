@@ -4,8 +4,8 @@
 #include <MFRC522DriverSPI.h>
 #include <MFRC522DriverPinSimple.h>
 
-const uint8_t READERS_COUNT = 1;
-const uint8_t sdaPins[READERS_COUNT] = {4};
+const uint8_t READERS_COUNT = 5;
+const uint8_t sdaPins[READERS_COUNT] = {4, 5, 17, 21};
 const uint8_t RST_PIN = 22;
 
 MFRC522DriverPinSimple* readerPins[READERS_COUNT];
