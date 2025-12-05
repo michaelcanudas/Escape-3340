@@ -3,57 +3,42 @@
 #include <MFRC522v2.h>
 #include <MFRC522DriverSPI.h>
 #include <MFRC522DriverPinSimple.h>
+#include <WiFi.h>
 
-const uint8_t READERS_COUNT = 5;
-const uint8_t sdaPins[READERS_COUNT] = {4, 5, 17, 21, 2};
+// --- WiFi & Network Configuration ---
+const char *ssid = "yale wireless";
+const char *serverIP = "10.66.236.77"; // Pi IP address
+const uint16_t serverPort = 7531;
+
+WiFiClient client;
+
+// --- RFID Configuration ---
+const uint8_t READERS_COUNT = 4;
+const uint8_t sdaPins[READERS_COUNT] = {4, 5, 17, 21};
 const uint8_t RST_PIN = 22;
 
-const byte TARGET_UIDS[READERS_COUNT][7] = {
-	{0x04, 0x33, 0x62, 0xCC, 0x2E, 0x61, 0x80},
-	{0x04, 0xC2, 0x0D, 0x72, 0x3E, 0x61, 0x80},
-	{0x04, 0x0C, 0x41, 0xCE, 0x2E, 0x61, 0x80},
-	{0x04, 0x2C, 0x56, 0x6F, 0x3E, 0x61, 0x80},
-	{0x04, 0x56, 0x16, 0x66, 0x4E, 0x61, 0x80}
-};
-
 byte lastReadUIDs[READERS_COUNT][7]; // Stores the last UID seen by each reader
-bool puzzleActive[READERS_COUNT];
-bool puzzleSolved = false;
 
 MFRC522DriverPinSimple* readerPins[READERS_COUNT];
 MFRC522DriverSPI* readerDrivers[READERS_COUNT];
 MFRC522* readers[READERS_COUNT];
 
-void onPuzzleSolve() {
-	if (!puzzleSolved) {
-		Serial.println(F("PUZZLE SOLVED!"));
-		puzzleSolved = true;
-	}
-}
-
-bool checkUID(byte* readUID, const byte* targetUID) {
-	for (byte i = 0; i < 7; i++) {
-		if (readUID[i] != targetUID[i]) return false;
-	}
-	return true;
-}
-
-void checkPuzzle() {
-	bool allCorrect = true;
-	for (uint8_t i = 0; i < READERS_COUNT; i++) {
-		// Compare the last known UID on this reader to the target
-		if (checkUID(lastReadUIDs[i], TARGET_UIDS[i])) {
-			puzzleActive[i] = true;
-		} else {
-			puzzleActive[i] = false;
-			allCorrect = false;
+// Construct the status string and send to server
+void onGameStatusChange() {
+	if (client.connected()) {
+		String msg = "status:presents";
+		
+		for (uint8_t i = 0; i < READERS_COUNT; i++) {
+			msg += ":";
+			for (int b = 0; b < 7; b++) {
+				if (lastReadUIDs[i][b] < 0x10) msg += "0";
+				msg += String(lastReadUIDs[i][b], HEX);
+			}
 		}
-	}
-
-	if (allCorrect) {
-		onPuzzleSolve();
-	} else {
-		puzzleSolved = false;
+		
+    client.println("relay:toggle");
+		client.println(msg);
+		Serial.println("Sent: " + msg);
 	}
 }
 
@@ -61,11 +46,28 @@ void setup() {
 	Serial.begin(115200);
 	SPI.begin();
 
+	// --- WiFi Setup ---
+	WiFi.begin(ssid);
+	Serial.print("Connecting to WiFi");
+	while (WiFi.status() != WL_CONNECTED) {
+		delay(500);
+		Serial.print(".");
+	}
+	Serial.println("\nConnected! IP: " + WiFi.localIP().toString());
+
+	// --- Server Connection ---
+	if (client.connect(serverIP, serverPort)) {
+		Serial.println("Connected to server!");
+		client.println("presents"); // Send handshake on initial connection
+	} else {
+		Serial.println("Connection failed.");
+	}
+
+	// --- RFID Initialization ---
 	for (uint8_t i = 0; i < READERS_COUNT; i++) {
 		readerPins[i] = new MFRC522DriverPinSimple(sdaPins[i]);
 		
 		// Initialize with a slower SPI speed (500kHz) to fix stability issues
-		// MFRC522DriverSPI(pin, spi_interface, spi_settings)
 		readerDrivers[i] = new MFRC522DriverSPI(
 			*readerPins[i], 
 			SPI, 
@@ -75,12 +77,24 @@ void setup() {
 		readers[i] = new MFRC522(*readerDrivers[i]);
 		readers[i]->PCD_Init();
 		
-		puzzleActive[i] = false;
 		memset(lastReadUIDs[i], 0, 7); // Clear history on boot
 	}
 }
 
 void loop() {
+	// --- Network Reconnection Logic ---
+	if (!client.connected()) {
+		Serial.println("Disconnected. Reconnecting...");
+		if (client.connect(serverIP, serverPort)) {
+			Serial.println("Reconnected!");
+			client.println("presents"); // Send handshake on reconnection
+		} else {
+			delay(5000); // Wait 5 seconds before retry
+			return;
+		}
+	}
+
+	// --- RFID Loop ---
 	for (uint8_t i = 0; i < READERS_COUNT; i++) {
 		MFRC522* reader = readers[i];
 		
@@ -92,22 +106,11 @@ void loop() {
 			Serial.print(i);
 			Serial.println(F(" Updated"));
 			
+			// Send update to server
+			onGameStatusChange();
+
 			reader->PICC_HaltA();
 			reader->PCD_StopCrypto1();
 		}
-	}
-	checkPuzzle();
-
-	static unsigned long lastPrintTime = 0;
-	if (millis() - lastPrintTime > 100) {
-		lastPrintTime = millis();
-		Serial.print(F("Status: "));
-		for (uint8_t i = 0; i < READERS_COUNT; i++) {
-			Serial.print(F("R"));
-			Serial.print(i);
-			Serial.print(F(":"));
-			Serial.print(puzzleActive[i] ? "OK " : "-- ");
-		}
-		Serial.println(puzzleSolved ? F("SOLVED") : F("WAITING"));
 	}
 }
