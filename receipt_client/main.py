@@ -5,8 +5,8 @@ HOST = '10.66.236.77'
 PORT = 7531
 
 def print_message(printer, message):
-    printer.text(message)
-    print("Printed message {message}")
+    printer.text(message.replace('\\n', '\n'))
+    print(f"Printed message {message}")
 
 def receive_from_server(conn):
     printer = Usb(0x0416, 0x5011, in_ep=0x81, out_ep=0x03, profile="POS-5890")
