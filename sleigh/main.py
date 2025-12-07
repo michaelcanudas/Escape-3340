@@ -28,10 +28,18 @@ def deactivate():
     print('Deactivated')
 
 
-def magnet_update(conn):
-    hall_was_active = False
+def send_to_server(conn, message):
+    if conn is None:
+        return
+    try:
+        conn.send(message.encode())
+        print(f'Sent message to server: {message}')
+    except Exception as e:
+        print(f'Failed to send message to server: {message} ({e})')
 
-    while running:
+def magnet_update(conn, stop_event):
+    hall_was_active = False
+    while not stop_event.is_set() and running:
         if hall.is_active and not hall_was_active:
             send_to_server(conn, 'event:magnetactive')
         elif not hall.is_active and hall_was_active:
@@ -41,21 +49,14 @@ def magnet_update(conn):
         time.sleep(0.1)
 
 
-def send_to_server(conn, message):
+def receive_from_server(conn, stop_event):
     try:
-        conn.send(message.encode())
-        print(f'Sent message to server: {message}')
-    except Exception as e:
-        print(f'Failed to send message to server: {message} ({e})')
-
-
-def receive_from_server(conn):
-    try:
-        while running:
+        while running and not stop_event.is_set():
             command = conn.recv(1024).decode()
             if not command:
                 break
 
+            command = command.strip()
             if command == 'activate':
                 activate()
             elif command == 'deactivate':
@@ -65,6 +66,7 @@ def receive_from_server(conn):
         print(f'Server read error: {e}')
 
     finally:
+        stop_event.set()
         try:
             conn.close()
         except:
@@ -76,7 +78,7 @@ def connect():
         try:
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             s.connect((HOST, PORT))
-            print('Connected')
+            print('Connected to server')
 
             s.send('sleigh'.encode())
             return s
@@ -89,21 +91,26 @@ def connect():
 
 
 def start_client():
+    global running
     while running:
         conn = connect()
         if conn is None:
             break
 
+        stop_event = threading.Event()
+
         magnet_thread = threading.Thread(
             target=magnet_update,
-            args=(conn,),
+            args=(conn, stop_event),
             daemon=True
         )
         magnet_thread.start()
 
-        receive_from_server(conn)
+        receive_from_server(conn, stop_event)
 
         print('Disconnected from server, reconnecting...')
+        stop_event.set()
+        time.sleep(1)
 
 
 def shutdown():
@@ -115,7 +122,6 @@ def shutdown():
 
 
 signal.signal(signal.SIGINT, lambda sig, frame: shutdown())
-
 
 deactivate()
 start_client()
