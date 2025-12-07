@@ -5,6 +5,7 @@ import signal
 import sys
 from gpiozero import DigitalInputDevice, DigitalOutputDevice
 
+
 HOST = '10.66.236.77'
 PORT = 7531
 
