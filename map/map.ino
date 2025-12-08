@@ -35,7 +35,7 @@ void setup() {
   }
 
   for (int i = 0; i < NUM_BUTTONS; i++) {
-    pinMode(BUTTON_PINS[i], INPUT);
+    pinMode(BUTTON_PINS[i], INPUT_PULLDOWN);
   }
   pinMode(SUBMIT_PIN, INPUT_PULLUP);
 }
@@ -59,7 +59,7 @@ void loop() {
   String buttonStates = "";
   for (int i = 0; i < NUM_BUTTONS; i++) {
     int raw = digitalRead(BUTTON_PINS[i]);
-    int logicalState = (raw == LOW) ? 1 : 0;
+    int logicalState = (raw == LOW) ? 0 : 1;
     buttonStates += String(logicalState);
     Serial.print(logicalState);
     Serial.print(" ");
