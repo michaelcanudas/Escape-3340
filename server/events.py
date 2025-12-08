@@ -109,9 +109,9 @@ def handle_map_submit(data):
 
     if data == '10010': # TODO
         state.is_voting_period = True
+        send_to_device('lights', 'red')
         logs.put('!!!!! Map completed successfully !!!!! Time to voice act. Your script:\n\n')
         logs.put('Sunday, December 7th. Today, I broke into Santa’s Workshop. He had a lot of cool gadgets, including a present tracker, a map, and even a whole freaking sleigh! Ugh, so disgusting. Why would anyone go to such lengths to deliver presents to a bunch of ungrateful little brats? Anyways, I messed everything up. Shuffled around the kids’ letters, mismatched presents to kids, changed the colors on the map, unplugged Santa’s sleigh… you know, typical Grinch stuff. That fat man wearing the ugly-ass red costume won’t see what’s coming.')
         logs.put('Monday, December 8th. Ugh, it looks like Santa’s sending a bunch of people into his Workshop to repair it today. I spent all that time messing everything up… and he’s just gonna get back to delivering presents, despite all that?\n\n...\n\nwait… I have an idea. I can disguise myself as a human and pretend I’m one of the people sent to repair the workshop. While they try to put everything back in order, I’ll be sabotaging them the whole time. I’ll create chaos amongst friends, give out false information, and even switch things around when they’re not looking. Now, I just need to choose a fake name to tell them… hopefully they don’t discuss amongst themselves, decide who The Grinch is, and vote me out!')
-        logs.put('\n\nType `lights:red` after reading the script.')
     else:
         logs.put('Player submitted incorrect map solution: ' + data)
