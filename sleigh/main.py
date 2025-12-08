@@ -6,7 +6,7 @@ import sys
 from gpiozero import DigitalInputDevice, DigitalOutputDevice
 
 
-HOST = '10.66.236.77'
+HOST = '193.122.147.106'
 PORT = 7531
 
 HALL_PIN = 14
