@@ -65,6 +65,8 @@ void loop() {
     Serial.print(" ");
   }
 
+  writeln(buttonStates);
+
   int submitRaw = digitalRead(SUBMIT_PIN);
   int submitState = (submitRaw == LOW) ? 1 : 0;
   Serial.println(submitState);
