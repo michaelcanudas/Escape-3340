@@ -107,7 +107,7 @@ def handle_map_submit(data):
 
     state.last_map_check_time = time.time()
 
-    if data == '11001':
+    if data.strip() == '11001':
         state.is_voting_period = True
         send_to_device('lights', 'red')
         logs.put('!!!!! Map completed successfully !!!!! Time to voice act! Your script:\n\n')
