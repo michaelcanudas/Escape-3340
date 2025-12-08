@@ -20,7 +20,11 @@ def trigger(name, *args, **kwargs):
 
 @on('reset')
 def handle_reset():
+    from server import send_to_device
     state.reset_state()
+    send_to_device('generator_pot_7seg', 'display')
+    send_to_device('sleigh', 'deactivate')
+    send_to_device('lights', 'white')
     logs.put('System state has been reset')
 
 @on('sleigh_magnet')
