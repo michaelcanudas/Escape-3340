@@ -1,4 +1,5 @@
 from state import logs
+from server import send_to_device
 
 
 events = {}
@@ -18,9 +19,11 @@ def trigger(name, *args, **kwargs):
 
 @on('magnetactive')
 def handle_magnet_active():
+    send_to_device('lights', 'red')
     logs.put('Sleigh magnet is now active')
 
 
 @on('magnetinactive')
 def handle_magnet_inactive():
+    send_to_device('lights', 'white')
     logs.put('Sleigh magnet is now inactive')
