@@ -7,10 +7,10 @@ logs = queue.Queue()
 running = True
 
 present_correct_ids = [
-    "04C20D723E6180",
-    "040C41CE2E6180",
-    "045B98713E6180",
-    "045616664E6180"
+    "04c20d723e6180",
+    "040c41ce2e6180",
+    "045b98713e6180",
+    "045616664e6180"
 ]
 
 current_present_ids = [
