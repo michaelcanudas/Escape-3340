@@ -26,7 +26,7 @@ void sendEvent(uint8_t readerId, byte *uid, uint8_t uidSize)
 	if (!client.connected())
 		return;
 
-	String msg = "event:presentupdate:";
+	String msg = "event:present_tapped:";
 	msg += String(readerId);
 
 	msg += ":";

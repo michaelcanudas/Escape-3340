@@ -30,14 +30,14 @@ void setup() {
   }
   
   if (client.connect(serverIP, serverPort)) {
-    client.print("generator_connected");
+    client.print("generator_num_keypad");
   }
 }
 
 void loop() {
   if (!client.connected()) {
     if (client.connect(serverIP, serverPort)) {
-      client.print("generator_reconnected");
+      client.print("generator_num_keypad");
     } else {
       delay(500); 
       return;
