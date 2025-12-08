@@ -7,8 +7,8 @@ const uint16_t serverPort = 7531;
 WiFiClient client;
 
 const int NUM_BUTTONS = 5;
-const int BUTTON_PINS[NUM_BUTTONS] = {34, 35, 32, 33, 25};
-const int SUBMIT_PIN = 26;
+const int BUTTON_PINS[NUM_BUTTONS] = {26, 27, 32, 33, 25};
+const int SUBMIT_PIN = 14;
 
 int lastSubmitRaw = HIGH;
 
