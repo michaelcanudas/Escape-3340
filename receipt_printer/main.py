@@ -9,7 +9,7 @@ PORT = 7531
 
 def print_message(printer, args):
     try:
-        printer.text(args.replace('\\n', '\n').strip())
+        printer.text(args + ('\n' * 7)).strip()
         print(f"Printed: {args}")
     except Exception as e:
         print(f"Printer error: {e}")

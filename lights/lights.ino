@@ -48,7 +48,7 @@ void setup()
 {
   Serial.begin(115200);
   pinMode(relayPin, OUTPUT);
-  digitalWrite(relayPin, LOW);
+  digitalWrite(relayPin, HIGH);
 
   connectWiFi();
   connectServer();
@@ -84,5 +84,5 @@ void loop()
     }
   }
 
-  digitalWrite(relayPin, isRed ? HIGH : LOW);
+  digitalWrite(relayPin, isRed ? LOW : HIGH);
 }
