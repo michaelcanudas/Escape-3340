@@ -92,6 +92,13 @@ def handle_present_update(reader, uid):
         send_to_device('printer', 'print:Hohoho! The children will be so happy! A little birdie told me the number\n\n792')
         state.presents_lockbox_code_printed = True
 
+@on('power_generator')
+def power_generator():
+    from server import send_to_device
+    
+    state.generator_powered_on = True
+    send_to_device('generator_pot_7seg', "spinner")
+
 @on('map_submit')
 def handle_map_submit(data):
     from server import send_to_device
