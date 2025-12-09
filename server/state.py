@@ -62,7 +62,7 @@ def check_presents_correct():
     return True
 
 def reset_state():
-    global current_present_ids, presents_lockbox_code_printed, sleigh_magnet_present, generator_magnet_present, generator_powered_on, is_voting_period, last_map_check_time
+    global ready_for_finish, current_present_ids, presents_lockbox_code_printed, sleigh_magnet_present, generator_magnet_present, generator_powered_on, is_voting_period, last_map_check_time
     current_present_ids = [0, 0,0, 0]
     presents_lockbox_code_printed = False
     sleigh_magnet_present = False
@@ -70,3 +70,4 @@ def reset_state():
     generator_powered_on = False
     is_voting_period = False
     last_map_check_time = -1
+    ready_for_finish = False
