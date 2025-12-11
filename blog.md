@@ -16,6 +16,15 @@ _Credits: Eric_
 ## Puzzle 2: Turn On the Generator
 _Credits: Alicia_
 
+original plan: stranger things lights but didn't come in on time
+put that aside, focused on the puzzle design/hardware
+wanted to incorporate some type of conditional wheel (potentiometer)
+a lot of escape rooms give hints but not in order so based on that, originally had maze idea but felt too simple
+spent a lot of time designing the layered image, then divided full sketch into layers, vectorized then printed
+kerf bend box to look nicer
+potentiometer and number displayer (led) on same esp, only needs to be local but cindy and eric connected it to wifi and added the function of the spinning led when code is correct
+magnet circle added to top so easier to hold (also on potentiometer led esp
+
 ## Puzzle 3: The Sleigh
 _Credits: Lily_
 
