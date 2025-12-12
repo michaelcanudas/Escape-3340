@@ -51,7 +51,7 @@ _Credits: Lily_
 ## Puzzle 4: The Map
 _Credits: Murad_
 
-~[Map_Wiring_Diagram](./resources/mapwiring.png)
+![Map_Wiring_Diagram](./resources/mapwiring.png)
 
 ## Environmental Effects
 _Credits: Cindy and Michael_
