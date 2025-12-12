@@ -27,6 +27,7 @@ Some challenges were figuring out how the multi-device communication protocol wo
 
 ![Present matching puzzle](./resources/presents_front.jpg)
 ![Present matching puzzle: electronics](./resources/presents_back.jpg)
+![Present_matching_wiring: diagram](./resources/presentrackerwiring.png)
 
 ## Puzzle 2: Turn On the Generator
 _Credits: Alicia_
@@ -40,11 +41,17 @@ kerf bend box to look nicer
 potentiometer and number displayer (led) on same esp, only needs to be local but cindy and eric connected it to wifi and added the function of the spinning led when code is correct
 magnet circle added to top so easier to hold (also on potentiometer led esp
 
+![Generator_Wiring: diagram](./resources/generatorwiring.png)
+
 ## Puzzle 3: The Sleigh
 _Credits: Lily_
 
+![Sleigh_Wiring_Diagram](./resources/sleighwiring.png)
+
 ## Puzzle 4: The Map
 _Credits: Murad_
+
+~[Map_Wiring_Diagram](./resources/mapwiring.png)
 
 ## Environmental Effects
 _Credits: Cindy and Michael_
