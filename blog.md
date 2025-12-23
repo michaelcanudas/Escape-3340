@@ -4,8 +4,8 @@ ESCAPE 3340 was a one-day, holiday-themed, student-designed escape room for the 
 
 At the end of the escape room, the _social deduction_ element was revealed to participants. The day before, one participant from each group was notified that they are "The Grinch," and were instructed to sabotage their group's progress. At the end of the escape room, participants were to vote out who they thought was The Grinch.
 
-![The escape room](./resources/room.jpg)
-![The control room](./resources/control_booth.jpg)
+<img src="./resources/room.jpg" alt="The escape room" style="max-width:350px;" />
+<img src="./resources/control_booth.jpg" alt="The control room" style="max-width:350px;" />
 
 ## Design and Concept Development
 _Credits: Eric and Cindy_
@@ -25,9 +25,9 @@ Technically, RFID sensors detect the presence of RFID tags on the back of each w
 
 Some challenges were figuring out how the multi-device communication protocol worked. One of the RFID sensors never ended up working, which was a pain to debug since I thought that I had done something wrong. Also, we discovered that the sensors interfered with each other if too physically close.
 
-![Present matching puzzle](./resources/presents_front.jpg)
-![Present matching puzzle: electronics](./resources/presents_back.jpg)
-![Present_matching_wiring: diagram](./resources/presentrackerwiring.png)
+<img src="./resources/presents_front.jpg" alt="Present matching puzzle" style="max-width:350px;" />
+<img src="./resources/presents_back.jpg" alt="Present matching puzzle: electronics" style="max-width:350px;" />
+<img src="./resources/presentrackerwiring.png" alt="Present_matching_wiring: diagram" style="max-width:350px;" />
 
 ## Puzzle 2: Turn On the Generator
 _Credits: Alicia_
@@ -48,18 +48,28 @@ The wheel was attached to a potentiometer, so when it turned, it sent a value to
 ### Locality and Wifi
 The potentiometer and LED display were originally planned to be on the same ESP32 that required no wireless connection, unlike the keypad and magnet detector. This is because the wheel and display’s only job was to give hints; no communication with the server was required, whereas the server needed to know if the correct code was inputted into the keypad in order to turn on the generator and activate the magnet detector. However, we ended up making both ESP32s wifi-capable. The potentiometer and LED display were on one ESP, while the magnet detector and keypad was on another (it had required 13 pins). The second ESP has power jumped from the first to power the entire puzzle. To the right is the wiring diagram that Cindy put together detailing the more specific connections that each part had.
 
-![Generator_Wiring: diagram](./resources/generatorwiring.png)
+<img src="./resources/generatorwiring.png" alt="Generator_Wiring: diagram" style="max-width:350px;" />
+<img src="./resources/generator_sketch.png" alt="Generator sketch" style="max-width:350px;" />
+<img src="./resources/generator_pic.png" alt="Generator final build" style="max-width:350px;" />
 
 ## Puzzle 3: The Sleigh
 _Credits: Lily_
 
-The wiring and software logic of this puzzle was relatively easy: when a magnet sensor senses a magnet, the pi sends a message to Michael's server which then sends back a command to turn on lights and the display screen via an esp-controlled relay. The pi is always on, running a 12-days-of-christmas gif I animated in Premiere Pro. The most difficult part was the physical making of the sleigh. For one, the first time I lazer-cut my sleigh, it caught on fire. Appparently, the lazer was cutting too slowly, so at areas where there was a lot of curves close together, the wood was overheated and caught on flames. It was fixed by running the board on the larger lazer cutter, which had a stronger power and increased cutting speed, so that I was able to reduce the cutting time from 44 minutes to 6 minutes. There was also a lot of testing around to mark the exact location where the magnet sensor always detects the magnet (since the magnet sensor is on the other side of the wood board). I also had to cut slightly into the sleight boards to fit in cables and wires. All-in-all, there was a lot of precision design in making a clean, durable enclosure that withheld innocent-participants' handling and exploring. 
-![Sleigh_Wiring_Diagram](./resources/sleighwiring.png)
+[THE SLEIGH](./resources/sleigh.mov)
+
+The wiring and software logic of this puzzle was relatively easy: when a magnet sensor senses a magnet, the pi sends a message to Michael's server which then sends back a command to turn on lights and the display screen via an esp-controlled relay. The pi is always on, running a 12-days-of-christmas gif I animated in Premiere Pro. The most difficult part was the physical making of the sleigh. For one, the first time I lazer-cut my sleigh, it caught on fire. Appparently, the lazer was cutting too slowly, so at areas where there was a lot of curves close together, the wood was overheated and caught on flames. It was fixed by running the board on the larger lazer cutter, which had a stronger power and increased cutting speed, so that I was able to reduce the cutting time from 44 minutes to 6 minutes. There was also a lot of testing around to mark the exact location where the magnet sensor always detects the magnet (since the magnet sensor is on the other side of the wood board). I also had to cut slightly into the sleight boards to fit in cables and wires. All-in-all, there was a lot of precision design in making a clean, durable enclosure that withheld innocent-participants' handling and exploring.
+
+<img src="./resources/sleighwiring.png" alt="Sleigh_Wiring_Diagram" style="max-width:350px;" />
 
 ## Puzzle 4: The Map
 _Credits: Murad_
 
-![Map_Wiring_Diagram](./resources/mapwiring.png)
+The completion of the map was three parts: the physical map, the circuit design, and the programming integration to the networking. I used various tools online to extract the svg format of Yale's campus, used Adobe Illustrator to edit and remove the unneeded entities in the map, and laser-printed on acrylic. The circuit design was relatively straightforward, but soldering the buttons so that they could be used with the esp board took significantly longer. Each button represented a place on campus where the kid lives in the story. There was an interesting deployment problem when working with circuit boards on the acrylic: when the esp32 was on acrylic, there was some electrical discharge that affected and changed the values of the buttons. That took significantly longer to figure out, and I could finally diagnose the problem while debugging with Eric and Cindy. Next, we connected the map logic into Micheal’s networking module so that the environmental lights turned red when the participants solved the map.
+
+<img src="./resources/map.jpg" alt="The Map" style="max-width:350px;" />
+<img src="./resources/murad.jpeg" alt="Murad" style="max-width:350px;" />
+
+<img src="./resources/mapwiring.png" alt="Map_Wiring_Diagram" style="max-width:350px;" />
 
 ## Environmental Effects
 _Credits: Cindy and Michael_
@@ -70,8 +80,21 @@ First, the receipt printer uses the ECSPOS library and runs a Python script on a
 
 Second, a relay controls the lighting in the room. The relay contians is wired to an ESP, which switches the circuit betweeen a circuit of red lights and white lights. This is also connected to the server.
 
+<img src="./resources/room.jpeg" alt="The Room" style="max-width:350px;" />
+
 ## Networking and Control Room
 _Credits: Michael_
+
+As explained previously, all of our devices were remotely controlled via a central server created in Python. The devices join by sending the server a unique identifier, which is then kept in a dictionary. From then on, any device (including the CLI utility on the server) can broadcast messages to specific recipients, causing things to happen in the room. The server also has an events setup, which controls pre-programmed, routine state needed throughout the progression of the escape room. In terms of development, most of the difficulties were standard to networking setups. I had to ensure that devices would automatically connect to the server on boot, but also reconnect if the server goes down and starts again. I also had to make sure that the message parsing was robust-enough to prevent crashes if faulty messages were sent.of your friends playing) 
+
+I also designed the system so all devices were simple input/output only, with game logic being controlled exclusively via the server. The result was an incredibly user-friendly system, with device control being as simple as a CLI command. Because of the safety, we were event able to make last-minute changes without fail. For example, after a group accidentally solved the escape room early, we took down the server, pushed an update with new event code, and restarted it. The devices connected, and all continued running as planned.
+
+The control room was composed of an incredibly jank setup in the Trumbull laundry room, right across from where all the escaping magic took place. I had two computers set up, one with the server, and the other with the Zoom and ambience settings. During the game, we were able to see all the progress players made, including failed and successful puzzle attempts, from the comfort of the washing machines. This was also where the players’ biggest help, the receipt printer, was controlled. As we watched and listened to the players from Eric’s Zoom, I would send hints on behalf of Santa to help move players along if they were stuck. Music was also manually controlled from Eric’s computer, including the jazz ambience, final Grinch music, and other instrumentals that we would occasionally play as hints for puzzles that required more musical or Christmas-related knowledge.
+
+<img src="./resources/canudas.jpeg" alt="Canudas" style="max-width:350px;" />
+<img src="./resources/laptops.jpeg" alt="Control room laptops" style="max-width:350px;" />
+
+[The Control Room: Video](./resources/control_room.mov)
 
 ## Social Deduction: The Final Reveal
 
