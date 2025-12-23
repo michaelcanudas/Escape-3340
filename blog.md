@@ -32,14 +32,21 @@ Some challenges were figuring out how the multi-device communication protocol wo
 ## Puzzle 2: Turn On the Generator
 _Credits: Alicia_
 
-original plan: stranger things lights but didn't come in on time
-put that aside, focused on the puzzle design/hardware
-wanted to incorporate some type of conditional wheel (potentiometer)
-a lot of escape rooms give hints but not in order so based on that, originally had maze idea but felt too simple
-spent a lot of time designing the layered image, then divided full sketch into layers, vectorized then printed
-kerf bend box to look nicer
-potentiometer and number displayer (led) on same esp, only needs to be local but cindy and eric connected it to wifi and added the function of the spinning led when code is correct
-magnet circle added to top so easier to hold (also on potentiometer led esp
+In order to turn on the generator, players have to input the correct 4-digit code into the keypad. All four numbers in the code are given, but out of order. Players must decipher the image attached to the generator to find the right order for the code. On the wheel, players can find four symbols, each of which appear once in the image as well. There is one symbol per layer of the image, giving the correct order of the symbols that correspond with each number. By finding the order of the symbols, players can turn the wheel in that order to see the respective numbers in order as well.
+
+### Puzzle Design
+I knew that I wanted to have the players figure out the order for the code. The original idea was to have a maze for players to solve with symbols throughout, and the order that the player arrives at the symbol gave the order for the code. However, that felt too simple, so I drew inspiration from escape rooms that I’ve been to in the past, where hints are less direct and require more attention for the idea of the layered image. 
+
+I made a sketch of the full image before dividing it into layers.
+
+### Wiring and LED Display
+Since the lights we originally wanted to use to display corresponding numbers to symbols didn’t arrive on time, we pivoted to using an LED display instead. I was worried that the display required too many GPIO pins, but Cindy and Eric implemented it into my puzzle using only seven pins. 
+
+The wheel was attached to a potentiometer, so when it turned, it sent a value to an ESP32, which then flashed the corresponding number on the display. Once the player enters the correct code, the lights in the display would start spinning (courtesy of Eric).
+
+
+### Locality and Wifi
+The potentiometer and LED display were originally planned to be on the same ESP32 that required no wireless connection, unlike the keypad and magnet detector. This is because the wheel and display’s only job was to give hints; no communication with the server was required, whereas the server needed to know if the correct code was inputted into the keypad in order to turn on the generator and activate the magnet detector. However, we ended up making both ESP32s wifi-capable. The potentiometer and LED display were on one ESP, while the magnet detector and keypad was on another (it had required 13 pins). The second ESP has power jumped from the first to power the entire puzzle. To the right is the wiring diagram that Cindy put together detailing the more specific connections that each part had.
 
 ![Generator_Wiring: diagram](./resources/generatorwiring.png)
 
